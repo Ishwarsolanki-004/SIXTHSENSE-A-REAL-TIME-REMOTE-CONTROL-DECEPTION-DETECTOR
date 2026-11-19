@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SixthSense - Live Deception Detection</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>SixthSense <span class="subtitle">Real-Time Remote Deception Detection</span></h1>
+    <nav>
+      <a href="/" class="active">🎥 Live</a>
+      <a href="/upload">📤 Upload</a>
+      <a href="/history">📊 History</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card video-panel">
+      <div class="video-frame">
+        <img id="video-feed" src="{{ url_for('video_feed') }}" alt="Live camera feed">
+        <div id="calibration-banner" class="calibration-banner hidden"></div>
+      </div>
+    </section>
+
+    <section class="side-panel">
+      <div class="card session-controls">
+        <input type="text" id="subject-name" placeholder="Subject name (optional)">
+        <div class="button-row">
+          <button id="start-btn" class="btn btn-start">Start Session</button>
+          <button id="stop-btn" class="btn btn-stop" disabled>Stop Session</button>
+        </div>
+        <span id="session-status" class="status-text">No active session</span>
+      </div>
+
+      <div class="card stat-box">
+        <div id="bpm-text">BPM: ...</div>
+        <div id="mic-text">Mic: --</div>
+      </div>
+
+      <div class="card tells-list" id="tells-list">
+        <div class="empty">No active tells</div>
+      </div>
+
+      <div class="card truth-meter">
+        <div class="truth-meter-labels">
+          <span>truth</span>
+          <span id="confidence-pct">0%</span>
+          <span>deceit</span>
+        </div>
+        <div class="truth-meter-bar">
+          <div class="truth-meter-marker" id="truth-marker"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

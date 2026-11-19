@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SixthSense - Session History</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>SixthSense <span class="subtitle">Session History</span></h1>
+    <nav>
+      <a href="/">🎥 Live</a>
+      <a href="/upload">📤 Upload</a>
+      <a href="/history" class="active">📊 History</a>
+    </nav>
+  </header>
+
+  <main class="history-layout">
+    <section class="card session-list">
+      <h2>Sessions</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Subject</th>
+              <th>Start Time</th>
+              <th>Avg</th>
+              <th>Max</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in sessions %}
+            <tr class="{{ 'selected' if s.id == selected_id else '' }}">
+              <td><a href="/history?session_id={{ s.id }}">{{ s.id }}</a></td>
+              <td>{{ s.subject_name }}</td>
+              <td>{{ s.start_time }}</td>
+              <td>{{ '%.0f'|format(s.avg_confidence) ~ '%' if s.avg_confidence is not none else '-' }}</td>
+              <td>{{ '%.0f'|format(s.max_confidence) ~ '%' if s.max_confidence is not none else '-' }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5">No sessions recorded yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {% if selected_id %}
+    <section class="card event-list">
+      <h2>Events for Session #{{ selected_id }}</h2>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Time</th><th>Tell</th><th>Confidence</th></tr>
+          </thead>
+          <tbody>
+            {% for e in events %}
+            <tr>
+              <td>{{ e.event_time }}</td>
+              <td>{{ e.tell_text }}</td>
+              <td>{{ e.confidence_at_event }}%</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3">No tells recorded for this session.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,62 @@
+# ============================================================================
+# SixthSense / Lie Detector - Windows requirements (Python 3.12 x64)
+# ============================================================================
+# IMPORTANT: see MIGRATION_NOTES.md for why Python 3.12 (not 3.13) is the
+# supported interpreter right now: MediaPipe (required for face mesh + hand
+# tracking) has not published Python 3.13 wheels as of this writing.
+#
+# Install with:
+#   py -3.12 -m venv .venv
+#   .venv\Scripts\activate
+#   pip install --upgrade pip
+#   pip install -r requirements.txt
+#   python download_models.py
+# ============================================================================
+
+# --- Computer vision / ML core -----------------------------------------
+mediapipe==1.0.0
+opencv-contrib-python==4.11.0.86
+scipy==1.14.1
+
+# --- Emotion recognition -------------------------------------------------
+# facenet-pytorch (used internally by FER's MTCNN face detector) pins
+# numpy<2.0, torch<2.3, torchvision<0.18 and Pillow<10.3 - those pins
+# below satisfy it. mediapipe itself does not pin an upper numpy bound,
+# so this combination installs cleanly with no resolver conflicts.
+numpy==1.26.4
+fer==25.10.3
+tensorflow==2.21.0
+facenet-pytorch==2.6.0
+torch==2.2.2
+torchvision==0.17.2
+
+# --- Voice stress detection (Phase 1 + video-upload audio analysis) --------
+# Lightweight autocorrelation-based pitch tracking (voice_analysis.py) -
+# no heavy ML/ASR model, safe for low-end CPUs. sounddevice is used for the
+# live webcam microphone; moviepy is used only to extract the audio track
+# from an *uploaded* video file (moviepy==1.0.3 pinned to match fer's own
+# constraint of moviepy<2.0,>=1.0.3 - it was already an installed transitive
+# dependency of fer, now also imported directly by voice_analysis.py).
+sounddevice==0.5.5
+moviepy==1.0.3
+
+# --- Web app (Flask + MySQL) -----------------------------------------------
+flask==3.1.3
+mysql-connector-python==26.7.0
+
+# --- Misc / transitive pins for reproducibility ---------------------------
+Pillow==10.2.0
+pandas==2.2.3
+requests==2.32.3
+tqdm==4.66.5
+# protobuf intentionally left unpinned - tensorflow 2.21 requires
+# protobuf>=6.31.1, and pip's resolver picks the correct compatible
+# version automatically. Pinning it here caused a resolver conflict.
+
+# NOTE: tensorflow-macos and tensorflow-metal (macOS-only GPU backends from
+# the original requirements.txt) have been removed entirely - they do not
+# exist on PyPI for Windows and are not needed there; the plain `tensorflow`
+# package above already ships a Windows-native (CPU) build. If you have an
+# NVIDIA GPU on Windows and want GPU acceleration, install the matching
+# CUDA/cuDNN runtime and follow TensorFlow's current Windows-GPU guide -
+# TensorFlow 2.21 selects the GPU automatically once CUDA is available.

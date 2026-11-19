@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SixthSense - Upload Video</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>SixthSense <span class="subtitle">Upload Video for Analysis</span></h1>
+    <nav>
+      <a href="/">🎥 Live</a>
+      <a href="/upload" class="active">📤 Upload</a>
+      <a href="/history">📊 History</a>
+    </nav>
+  </header>
+
+  <main class="upload-layout">
+    <section class="card upload-card">
+      <h2>Analyze a recorded video</h2>
+      <p class="hint">
+        Supported formats: .mp4 .avi .mkv .mov .wmv &middot;
+        The first few seconds are used for calibration, same as the live view -
+        very short clips may show no results.
+      </p>
+
+      {% if error %}
+      <div class="alert alert-error">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" enctype="multipart/form-data" class="upload-form" id="upload-form">
+        <label for="subject-name">Subject name (optional)</label>
+        <input type="text" id="subject-name" name="subject_name" placeholder="e.g. Interview - John Doe">
+
+        <label for="video-file">Video file</label>
+        <input type="file" id="video-file" name="video_file" accept=".mp4,.avi,.mkv,.mov,.wmv" required>
+
+        <button type="submit" id="submit-btn">Analyze Video</button>
+      </form>
+
+      <div id="processing-banner" class="processing-banner hidden">
+        Processing video - this can take a little while for longer clips, please wait...
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("upload-form").addEventListener("submit", function () {
+      document.getElementById("submit-btn").disabled = true;
+      document.getElementById("processing-banner").classList.remove("hidden");
+    });
+  </script>
+</body>
+</html>
