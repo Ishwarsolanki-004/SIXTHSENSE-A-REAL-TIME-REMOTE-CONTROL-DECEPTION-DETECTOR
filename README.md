@@ -217,10 +217,10 @@ Band-pass filtering and CHROM/POS rPPG · head-pose compensation · better pitch
 
 ## Responsible use checklist
 
-- [ ] Explain to every participant what is observed and obtain consent.
-- [ ] Keep processing local; bind the server to `127.0.0.1` unless network access is needed.
-- [ ] Protect the MySQL account with a password; delete sessions and uploads you no longer need.
-- [ ] Present results as behavioural indicators, never as proof of deception.
+- [x] Explain to every participant what is observed and obtain consent.
+- [x] Keep processing local; bind the server to `127.0.0.1` unless network access is needed.
+- [x] Protect the MySQL account with a password; delete sessions and uploads you no longer need.
+- [x] Present results as behavioural indicators, never as proof of deception.
 
 ---
 
